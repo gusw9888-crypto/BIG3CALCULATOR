@@ -212,9 +212,34 @@ function parseVoiceInput(text) {
     return { weight, reps };
 }
 
+// 개선 방향 생성 함수
+function generateImprovementAdvice(exercise, oneRM, currentWeight, currentReps) {
+    const adviceByExercise = {
+        'bench': [
+            `1RM ${oneRM.toFixed(0)}kg입니다. 근력 향상을 위해 80-85% 무게로 5세트 5회 반복을 추천합니다.`,
+            `현재 수준에서 벤치프레스 3회 이상 가능한 무게로 점진적 과부하를 적용하세요.`,
+            `근비대를 위해 70% 무게로 8-12회, 4세트를 수행하며 휴식은 90초가 적당합니다.`
+        ],
+        'deadlift': [
+            `1RM ${oneRM.toFixed(0)}kg입니다. 허리 보호를 위해 데드리프트 후 48시간 회복 시간을 권장합니다.`,
+            `그립 강화를 위해 85% 무게로 3회씩 훈련하고, 스트랩 없이 연습하세요.`,
+            `폼 개선이 우선입니다. 60-70% 무게로 고관절 힌지 동작을 완벽히 익히세요.`
+        ],
+        'squat': [
+            `1RM ${oneRM.toFixed(0)}kg입니다. 하체 근력 향상을 위해 주 2회, 80% 무게로 5회 3세트를 권장합니다.`,
+            `깊이 개선이 중요합니다. 60% 무게로 풀 스쿼트 연습 후 점진적으로 무게를 늘리세요.`,
+            `대퇴사두근 발달을 위해 70% 무게로 템포 스쿼트(3초 내려가기)를 시도하세요.`
+        ]
+    };
+
+    const advice = adviceByExercise[exercise];
+    return advice[Math.floor(Math.random() * advice.length)];
+}
+
 // TTS (음성 설명) 기능
 const readAloudBtn = document.getElementById('read-aloud');
 let currentAudio = null;
+let lastAdvice = '';
 
 readAloudBtn.addEventListener('click', async () => {
     // 이미 재생 중이면 중지
@@ -222,28 +247,32 @@ readAloudBtn.addEventListener('click', async () => {
         currentAudio.pause();
         currentAudio = null;
         readAloudBtn.classList.remove('playing');
-        readAloudBtn.textContent = '🔊 결과 음성으로 듣기';
+        readAloudBtn.textContent = '🔊 개선 방향 듣기';
         return;
     }
 
     const oneRMText = oneRMDisplay.textContent;
-    const formulaText = formulaUsed.textContent;
 
     if (oneRMText === '-') {
         alert('먼저 계산을 수행해주세요.');
         return;
     }
 
-    // 운동 종류 한글로
-    const exerciseNames = {
-        'bench': '벤치프레스',
-        'deadlift': '데드리프트',
-        'squat': '스쿼트'
-    };
-    const exerciseName = exerciseNames[exerciseSelect.value];
+    const exercise = exerciseSelect.value;
+    const oneRM = parseFloat(oneRMText.replace(' kg', ''));
+    const currentWeight = parseFloat(weightInput.value);
+    const currentReps = parseInt(repsInput.value);
 
-    // 음성으로 읽을 텍스트 생성
-    const speechText = `${exerciseName} 1RM 계산 결과를 안내드립니다. ${formulaText}. 예상 1RM은 ${oneRMText}입니다. 화이팅!`;
+    // 개선 방향 생성
+    const advice = generateImprovementAdvice(exercise, oneRM, currentWeight, currentReps);
+    lastAdvice = advice;
+
+    // 화면에 표시
+    const adviceDisplay = document.getElementById('improvement-advice');
+    if (adviceDisplay) {
+        adviceDisplay.textContent = advice;
+        adviceDisplay.style.display = 'block';
+    }
 
     try {
         readAloudBtn.disabled = true;
@@ -254,7 +283,7 @@ readAloudBtn.addEventListener('click', async () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text: speechText })
+            body: JSON.stringify({ text: advice })
         });
 
         if (!response.ok) {
@@ -274,7 +303,7 @@ readAloudBtn.addEventListener('click', async () => {
         currentAudio.onended = () => {
             currentAudio = null;
             readAloudBtn.classList.remove('playing');
-            readAloudBtn.textContent = '🔊 결과 음성으로 듣기';
+            readAloudBtn.textContent = '🔊 개선 방향 듣기';
             URL.revokeObjectURL(audioUrl);
         };
 
@@ -282,14 +311,14 @@ readAloudBtn.addEventListener('click', async () => {
             alert('음성 재생 중 오류가 발생했습니다.');
             currentAudio = null;
             readAloudBtn.classList.remove('playing');
-            readAloudBtn.textContent = '🔊 결과 음성으로 듣기';
+            readAloudBtn.textContent = '🔊 개선 방향 듣기';
             readAloudBtn.disabled = false;
         };
 
     } catch (error) {
         console.error('TTS Error:', error);
         alert('음성 생성 중 오류가 발생했습니다: ' + error.message);
-        readAloudBtn.textContent = '🔊 결과 음성으로 듣기';
+        readAloudBtn.textContent = '🔊 개선 방향 듣기';
         readAloudBtn.disabled = false;
     }
 });

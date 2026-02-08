@@ -316,6 +316,26 @@ h1 {
     cursor: not-allowed;
 }
 
+.improvement-advice {
+    background: linear-gradient(145deg, #1a2a1a, #0a1a0a);
+    border-left: 5px solid #4CAF50;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    color: #a5d6a7;
+    font-size: 1rem;
+    line-height: 1.6;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+}
+
+.improvement-advice::before {
+    content: '💡 ';
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
 .rm-label {
     font-size: 1.1rem;
     opacity: 0.95;
