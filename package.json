@@ -1,0 +1,16 @@
+{
+  "name": "big3calculator",
+  "version": "1.0.0",
+  "description": "BIG3 1RM Calculator with Voice Features",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["1rm", "calculator", "fitness"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "openai": "^4.73.0"
+  }
+}

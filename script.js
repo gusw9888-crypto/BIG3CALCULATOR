@@ -211,3 +211,85 @@ function parseVoiceInput(text) {
 
     return { weight, reps };
 }
+
+// TTS (음성 설명) 기능
+const readAloudBtn = document.getElementById('read-aloud');
+let currentAudio = null;
+
+readAloudBtn.addEventListener('click', async () => {
+    // 이미 재생 중이면 중지
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+        readAloudBtn.classList.remove('playing');
+        readAloudBtn.textContent = '🔊 결과 음성으로 듣기';
+        return;
+    }
+
+    const oneRMText = oneRMDisplay.textContent;
+    const formulaText = formulaUsed.textContent;
+
+    if (oneRMText === '-') {
+        alert('먼저 계산을 수행해주세요.');
+        return;
+    }
+
+    // 운동 종류 한글로
+    const exerciseNames = {
+        'bench': '벤치프레스',
+        'deadlift': '데드리프트',
+        'squat': '스쿼트'
+    };
+    const exerciseName = exerciseNames[exerciseSelect.value];
+
+    // 음성으로 읽을 텍스트 생성
+    const speechText = `${exerciseName} 1RM 계산 결과를 안내드립니다. ${formulaText}. 예상 1RM은 ${oneRMText}입니다. 화이팅!`;
+
+    try {
+        readAloudBtn.disabled = true;
+        readAloudBtn.textContent = '🔄 음성 생성 중...';
+
+        const response = await fetch('http://localhost:8080/api/tts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: speechText })
+        });
+
+        if (!response.ok) {
+            throw new Error('TTS API 호출 실패');
+        }
+
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        currentAudio = new Audio(audioUrl);
+        readAloudBtn.classList.add('playing');
+        readAloudBtn.textContent = '⏸️ 재생 중지';
+        readAloudBtn.disabled = false;
+
+        currentAudio.play();
+
+        currentAudio.onended = () => {
+            currentAudio = null;
+            readAloudBtn.classList.remove('playing');
+            readAloudBtn.textContent = '🔊 결과 음성으로 듣기';
+            URL.revokeObjectURL(audioUrl);
+        };
+
+        currentAudio.onerror = () => {
+            alert('음성 재생 중 오류가 발생했습니다.');
+            currentAudio = null;
+            readAloudBtn.classList.remove('playing');
+            readAloudBtn.textContent = '🔊 결과 음성으로 듣기';
+            readAloudBtn.disabled = false;
+        };
+
+    } catch (error) {
+        console.error('TTS Error:', error);
+        alert('음성 생성 중 오류가 발생했습니다: ' + error.message);
+        readAloudBtn.textContent = '🔊 결과 음성으로 듣기';
+        readAloudBtn.disabled = false;
+    }
+});

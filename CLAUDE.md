@@ -8,14 +8,24 @@ BIG3 Calculator (삼대운동 1RM 계산기) - A web-based one-rep max (1RM) cal
 
 ## Development Commands
 
+### Installing Dependencies
+```bash
+npm install
+```
+
 ### Running the Server
 ```bash
+npm start
+# or
 node server.js
 ```
-Server runs on port 8080 and serves static files (index.html, style.css, script.js).
+Server runs on port 8080 and serves static files plus API endpoints.
 
-### No Build Process
-This is a vanilla HTML/CSS/JavaScript application with no build step, bundlers, or package managers.
+### Environment Setup
+Create a `.env` file with:
+```
+OPENAI_API_KEY=your_api_key_here
+```
 
 ## Architecture
 
@@ -27,7 +37,10 @@ This is a vanilla HTML/CSS/JavaScript application with no build step, bundlers, 
 - `style.css` - Dark theme styling with orange/red accent colors
 
 **Server**:
-- `server.js` - Basic Node.js HTTP server for serving static files (no API endpoints)
+- `server.js` - Node.js HTTP server with:
+  - Static file serving
+  - `/api/tts` POST endpoint for OpenAI TTS integration
+  - Uses `dotenv` for API key management
 
 ### 1RM Calculation Formulas
 
@@ -58,13 +71,22 @@ Each formula object in the `formulas` object has:
    - Table showing estimated weights for 10-1 reps (descending order)
    - Input row highlighted in table
 
-### Voice Input Feature
+### Voice Input Feature (STT)
 
 Uses browser's Web Speech API (Korean language support) to recognize voice input:
 - Click "🎤 음성으로 입력하기" button
 - Speak weight and reps (e.g., "100킬로 5회" or "백킬로 다섯회")
 - Input fields auto-populate and calculation triggers automatically
 - Parsing logic in `parseVoiceInput()` handles both Arabic and Korean numerals
+
+### Voice Output Feature (TTS)
+
+Uses OpenAI's TTS API to read calculation results aloud:
+- After calculation, click "🔊 결과 음성으로 듣기" button
+- Server endpoint `/api/tts` processes text-to-speech requests
+- Generates natural-sounding Korean voice explanation of 1RM results
+- Uses OpenAI's `tts-1` model with `nova` voice
+- Audio playback with play/pause control
 
 ### Development Environment
 
