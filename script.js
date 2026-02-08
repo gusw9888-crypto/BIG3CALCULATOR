@@ -123,3 +123,91 @@ function calculateRM() {
 window.addEventListener('load', () => {
     weightInput.focus();
 });
+
+// 음성 입력 기능
+const voiceBtn = document.getElementById('voice-input');
+const voiceStatus = document.getElementById('voice-status');
+
+// Web Speech API 지원 확인
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (SpeechRecognition) {
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ko-KR';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    voiceBtn.addEventListener('click', () => {
+        voiceBtn.classList.add('listening');
+        voiceStatus.textContent = '🎤 듣는 중... (예: "100킬로 5회")';
+        recognition.start();
+    });
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        voiceStatus.textContent = `인식됨: "${transcript}"`;
+
+        // 음성에서 숫자 추출
+        const parsedData = parseVoiceInput(transcript);
+
+        if (parsedData.weight && parsedData.reps) {
+            weightInput.value = parsedData.weight;
+            repsInput.value = parsedData.reps;
+            voiceStatus.textContent = `✅ ${parsedData.weight}kg × ${parsedData.reps}회 입력 완료!`;
+
+            // 2초 후 자동으로 계산
+            setTimeout(() => {
+                calculateRM();
+            }, 1000);
+        } else {
+            voiceStatus.textContent = '❌ 무게와 횟수를 다시 말씀해주세요';
+        }
+
+        voiceBtn.classList.remove('listening');
+    };
+
+    recognition.onerror = (event) => {
+        voiceStatus.textContent = `오류: ${event.error === 'no-speech' ? '음성이 감지되지 않았습니다' : '음성 인식 실패'}`;
+        voiceBtn.classList.remove('listening');
+    };
+
+    recognition.onend = () => {
+        voiceBtn.classList.remove('listening');
+    };
+} else {
+    voiceBtn.disabled = true;
+    voiceBtn.textContent = '🎤 음성 입력 미지원';
+    voiceStatus.textContent = '이 브라우저는 음성 인식을 지원하지 않습니다';
+}
+
+// 음성 입력 파싱 함수
+function parseVoiceInput(text) {
+    // 한글 숫자를 아라비아 숫자로 변환
+    const koreanNumbers = {
+        '일': 1, '이': 2, '삼': 3, '사': 4, '오': 5,
+        '육': 6, '칠': 7, '팔': 8, '구': 9, '십': 10,
+        '백': 100, '천': 1000
+    };
+
+    // "100킬로 5회", "백킬로 다섯회", "100kg 5번" 등 다양한 형식 지원
+    const numbers = text.match(/\d+/g) || [];
+
+    let weight = null;
+    let reps = null;
+
+    if (numbers.length >= 2) {
+        weight = parseFloat(numbers[0]);
+        reps = parseInt(numbers[1]);
+    } else if (numbers.length === 1) {
+        // 하나의 숫자만 있는 경우, 무게로 간주
+        weight = parseFloat(numbers[0]);
+
+        // 횟수를 한글로 찾기
+        const repsMatch = text.match(/(일|이|삼|사|오|육|칠|팔|구|십)회/);
+        if (repsMatch) {
+            reps = koreanNumbers[repsMatch[1]] || null;
+        }
+    }
+
+    return { weight, reps };
+}

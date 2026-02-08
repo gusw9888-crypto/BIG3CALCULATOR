@@ -145,6 +145,55 @@ h1 {
     gap: 15px;
 }
 
+.btn-voice {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    color: white;
+    border: 2px solid #ff6b35;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+}
+
+.btn-voice:hover {
+    background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+    border-color: #ffaa00;
+    box-shadow: 0 6px 20px rgba(255, 170, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-voice:active,
+.btn-voice.listening {
+    background: linear-gradient(145deg, #ff4400, #ff6b35);
+    border-color: #ffaa00;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 68, 0, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 68, 0, 0);
+    }
+}
+
+.voice-status {
+    text-align: center;
+    color: #ffaa00;
+    font-size: 0.9rem;
+    margin: -10px 0 15px 0;
+    min-height: 20px;
+    font-weight: bold;
+}
+
 .btn-calculate {
     width: 100%;
     padding: 18px;

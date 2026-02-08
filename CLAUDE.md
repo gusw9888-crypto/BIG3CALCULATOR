@@ -49,12 +49,22 @@ Each formula object in the `formulas` object has:
 ### UI Flow
 
 1. User selects exercise type (dropdown)
-2. User inputs weight (kg) and reps performed
+2. User inputs weight (kg) and reps performed via:
+   - Manual keyboard input
+   - Voice input using Web Speech API (supports Korean)
 3. Click "계산하기" (Calculate) button or press Enter
 4. Results display:
    - Calculated 1RM in large display
    - Table showing estimated weights for 10-1 reps (descending order)
    - Input row highlighted in table
+
+### Voice Input Feature
+
+Uses browser's Web Speech API (Korean language support) to recognize voice input:
+- Click "🎤 음성으로 입력하기" button
+- Speak weight and reps (e.g., "100킬로 5회" or "백킬로 다섯회")
+- Input fields auto-populate and calculation triggers automatically
+- Parsing logic in `parseVoiceInput()` handles both Arabic and Korean numerals
 
 ### Development Environment
 
