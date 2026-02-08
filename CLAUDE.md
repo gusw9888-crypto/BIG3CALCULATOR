@@ -27,6 +27,14 @@ Create a `.env` file with:
 OPENAI_API_KEY=your_api_key_here
 ```
 
+### Deployment
+See `DEPLOY.md` for Cloudflare Pages deployment instructions.
+
+**Cloudflare Pages Structure:**
+- Static files (HTML, CSS, JS) served from root directory
+- `/functions/api/tts.js` - Cloudflare Worker for TTS API endpoint
+- Environment variables configured in Cloudflare Dashboard
+
 ## Architecture
 
 ### Core Components

@@ -249,7 +249,7 @@ readAloudBtn.addEventListener('click', async () => {
         readAloudBtn.disabled = true;
         readAloudBtn.textContent = '🔄 음성 생성 중...';
 
-        const response = await fetch('http://localhost:8080/api/tts', {
+        const response = await fetch('/api/tts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

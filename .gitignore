@@ -2,3 +2,6 @@ node_modules/
 .env
 .claude/
 package-lock.json
+.wrangler/
+.dev.vars
+dist/
