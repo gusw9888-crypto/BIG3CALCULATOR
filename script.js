@@ -278,6 +278,8 @@ readAloudBtn.addEventListener('click', async () => {
         readAloudBtn.disabled = true;
         readAloudBtn.textContent = '🔄 음성 생성 중...';
 
+        console.log('Calling TTS API with text:', advice);
+
         const response = await fetch('/api/tts', {
             method: 'POST',
             headers: {
@@ -287,7 +289,9 @@ readAloudBtn.addEventListener('click', async () => {
         });
 
         if (!response.ok) {
-            throw new Error('TTS API 호출 실패');
+            const errorText = await response.text();
+            console.error('TTS API Error:', response.status, errorText);
+            throw new Error(`TTS API 호출 실패 (${response.status}): ${errorText}`);
         }
 
         const audioBlob = await response.blob();
