@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>삼대운동 1RM 계산기</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>💪 삼대운동 1RM 계산기</h1>
+        <p class="subtitle">벤치프레스, 데드리프트, 스쿼트의 1RM을 계산하세요</p>
+
+        <div class="calculator-card">
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="exercise">운동 종목</label>
+                    <select id="exercise">
+                        <option value="bench">벤치프레스 (Bench Press)</option>
+                        <option value="deadlift">데드리프트 (Deadlift)</option>
+                        <option value="squat">스쿼트 (Squat)</option>
+                    </select>
+                </div>
+
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="weight">무게 (kg)</label>
+                        <input type="number" id="weight" placeholder="예: 100" min="0" step="0.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reps">횟수 (회)</label>
+                        <input type="number" id="reps" placeholder="예: 5" min="1" max="30">
+                    </div>
+                </div>
+
+                <button id="calculate" class="btn-calculate">계산하기</button>
+            </div>
+
+            <div id="result-section" class="result-section" style="display: none;">
+                <h2>계산 결과</h2>
+
+                <div class="rm-display">
+                    <div class="rm-label">예상 1RM</div>
+                    <div id="one-rm" class="rm-value">-</div>
+                </div>
+
+                <div class="formula-info">
+                    <small id="formula-used"></small>
+                </div>
+
+                <h3>예상 반복 횟수별 무게</h3>
+                <div class="table-container">
+                    <table id="result-table">
+                        <thead>
+                            <tr>
+                                <th>횟수</th>
+                                <th>예상 무게 (kg)</th>
+                                <th>백분율</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>📊 계산 공식 정보</h3>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h4>벤치프레스</h4>
+                    <p>Epley 공식 사용</p>
+                    <code>1RM = 무게 × (1 + 횟수/30)</code>
+                </div>
+                <div class="info-card">
+                    <h4>데드리프트</h4>
+                    <p>Brzycki 공식 사용</p>
+                    <code>1RM = 무게 × (36/(37-횟수))</code>
+                </div>
+                <div class="info-card">
+                    <h4>스쿼트</h4>
+                    <p>Lander 공식 사용</p>
+                    <code>1RM = (100×무게)/(101.3-2.67×횟수)</code>
+                </div>
+            </div>
+            <p class="note">※ 이 계산기는 예측값을 제공하며, 실제 1RM은 개인의 컨디션과 기술에 따라 다를 수 있습니다.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

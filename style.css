@@ -1,0 +1,408 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    background: #0a0a0a;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 68, 0, 0.03) 2px, rgba(255, 68, 0, 0.03) 4px),
+        linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #fff;
+    position: relative;
+}
+
+body::before {
+    content: '🏋️';
+    position: fixed;
+    font-size: 300px;
+    opacity: 0.03;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    text-shadow:
+        0 0 10px rgba(255, 68, 0, 0.8),
+        0 0 20px rgba(255, 68, 0, 0.6),
+        0 0 30px rgba(255, 68, 0, 0.4),
+        3px 3px 0 rgba(0,0,0,0.5);
+    letter-spacing: 3px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    text-align: center;
+    color: #ff6b35;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.calculator-card {
+    background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.8),
+        inset 0 1px 0 rgba(255, 68, 0, 0.2),
+        0 0 30px rgba(255, 68, 0, 0.1);
+    margin-bottom: 30px;
+    border: 2px solid rgba(255, 68, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.calculator-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 68, 0, 0.02) 10px,
+        rgba(255, 68, 0, 0.02) 20px
+    );
+    pointer-events: none;
+}
+
+.input-section {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 900;
+    color: #ff6b35;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.form-group select,
+.form-group input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    background: #0a0a0a;
+    color: #fff;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+    outline: none;
+    border-color: #ff4400;
+    box-shadow: 0 0 20px rgba(255, 68, 0, 0.4);
+    background: #1a1a1a;
+}
+
+.form-group select option {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 10px;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.btn-calculate {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(145deg, #ff4400, #cc3300);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.3rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow:
+        0 8px 0 #991100,
+        0 10px 30px rgba(255, 68, 0, 0.4);
+    position: relative;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+}
+
+.btn-calculate:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 11px 0 #991100,
+        0 15px 40px rgba(255, 68, 0, 0.6);
+}
+
+.btn-calculate:active {
+    transform: translateY(4px);
+    box-shadow:
+        0 4px 0 #991100,
+        0 5px 20px rgba(255, 68, 0, 0.4);
+}
+
+.btn-calculate::before {
+    content: '💪';
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.result-section {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.result-section h2 {
+    color: #ff6b35;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(255, 68, 0, 0.5);
+}
+
+.result-section h3 {
+    color: #ff6b35;
+    margin: 25px 0 15px 0;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rm-display {
+    background: linear-gradient(145deg, #ff4400, #ff6b35);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+    box-shadow:
+        0 10px 0 #991100,
+        0 15px 40px rgba(255, 68, 0, 0.5),
+        inset 0 -3px 10px rgba(0,0,0,0.3);
+    border: 3px solid #ffaa00;
+    position: relative;
+}
+
+.rm-display::before {
+    content: '🔥';
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    opacity: 0.3;
+}
+
+.rm-label {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.rm-value {
+    font-size: 4rem;
+    font-weight: 900;
+    text-shadow:
+        0 4px 0 rgba(0,0,0,0.3),
+        0 0 20px rgba(255,255,255,0.5);
+    letter-spacing: 3px;
+}
+
+.formula-info {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #aaa;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+thead {
+    background: linear-gradient(145deg, #ff4400, #ff6b35);
+    box-shadow: 0 4px 10px rgba(255, 68, 0, 0.3);
+}
+
+th {
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 900;
+    color: #fff;
+    border-bottom: 3px solid #ffaa00;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #333;
+    color: #fff;
+    font-weight: bold;
+}
+
+tbody tr {
+    background: rgba(26, 26, 26, 0.5);
+    transition: all 0.3s;
+}
+
+tbody tr:hover {
+    background: rgba(255, 68, 0, 0.1);
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(255, 68, 0, 0.2);
+}
+
+.percentage {
+    color: #ffaa00;
+    font-weight: 900;
+    font-size: 1.1rem;
+}
+
+.info-section {
+    background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.8),
+        0 0 30px rgba(255, 68, 0, 0.1);
+    border: 2px solid rgba(255, 68, 0, 0.3);
+}
+
+.info-section h3 {
+    color: #ff6b35;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(255, 68, 0, 0.5);
+}
+
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-card {
+    background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #ff4400;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    transition: all 0.3s;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 68, 0, 0.3);
+    border-left-color: #ffaa00;
+}
+
+.info-card h4 {
+    color: #ff6b35;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.info-card p {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-family: 'Arial', sans-serif;
+}
+
+.info-card code {
+    display: block;
+    background: #000;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    color: #ffaa00;
+    overflow-x: auto;
+    border: 1px solid #333;
+    font-weight: bold;
+}
+
+.note {
+    color: #ffaa00;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 15px;
+    background: rgba(255, 170, 0, 0.1);
+    border-radius: 10px;
+    border-left: 4px solid #ffaa00;
+    border: 2px solid rgba(255, 170, 0, 0.3);
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .rm-value {
+        font-size: 2.5rem;
+    }
+
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+}
